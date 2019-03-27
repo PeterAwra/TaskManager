@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskActivity extends AppCompatActivity {
@@ -31,6 +32,7 @@ public class TaskActivity extends AppCompatActivity {
             List<Task> mTaskList;
 
             public TaskAdapter(List<Task> taskList) {
+                mTaskList=new ArrayList<>();
                 setData(taskList);
             }
 
@@ -43,12 +45,12 @@ public class TaskActivity extends AppCompatActivity {
             public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
                 View mRowList = inflater.inflate(R.layout.item_task, viewGroup,false);
-                return new TaskViewHolder(mRowList,mTaskList.get(i));
+                return new TaskViewHolder(mRowList);
             }
 
             @Override
             public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int i) {
-                taskViewHolder. setDataTask(mTaskList.get(i));
+                taskViewHolder.setDataTask(mTaskList.get(i));
             }
 
             @Override
@@ -59,15 +61,18 @@ public class TaskActivity extends AppCompatActivity {
 
     private class TaskViewHolder extends RecyclerView.ViewHolder {
         Task mTask;
-        public TaskViewHolder(@NonNull View itemView, Task i) {
+        View mView;
+        public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            TextView tv_tasl=itemView.findViewById(R.id.task_item);
-            tv_tasl.setText(mTask.getTaskTitle());
+            mView=itemView;
+
 
         }
 
         public void setDataTask(Task task) {
             mTask=task;
+            TextView tv_tasl=mView.findViewById(R.id.task_item);
+            tv_tasl.setText(mTask.getTaskTitle());
         }
     }
 }
