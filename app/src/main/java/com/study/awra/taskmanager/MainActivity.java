@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mInputTask=findViewById(R.id.et_input_task);
         mButtonAddTask =findViewById(R.id.bt_add_task);
         mPriority=findViewById(R.id.tv_choose_priority);
