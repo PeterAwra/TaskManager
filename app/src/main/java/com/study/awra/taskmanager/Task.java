@@ -1,13 +1,17 @@
 package com.study.awra.taskmanager;
 
+import android.content.Context;
+
+import java.util.Random;
 import java.util.UUID;
 
 public class Task {
     private String mTaskTitle;
-    private int  mPriority;
+    private PriorityTask mPriority  ;
     private UUID ID;
+    private Context mContext;
 
-    public Task(String taskTitle, int priority) {
+    public Task(String taskTitle, PriorityTask priority) {
         mTaskTitle = taskTitle;
         mPriority = priority;
         ID=UUID.randomUUID();
@@ -21,11 +25,11 @@ public class Task {
         mTaskTitle = taskTitle;
     }
 
-    public int getPriority() {
+    public PriorityTask getPriority() {
         return mPriority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(PriorityTask priority) {
         mPriority = priority;
     }
 
@@ -33,4 +37,15 @@ public class Task {
         return ID;
     }
 
+    enum  PriorityTask{
+        PRIORITY_1,
+        PRIORITY_2,
+        PRIORITY_3,
+        PRIORITY_4;
+
+        public static PriorityTask random() {
+            PriorityTask[] values = PriorityTask.values();
+            return values[new Random().nextInt(values.length)];
+        }
+    }
 }

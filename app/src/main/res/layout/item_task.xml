@@ -4,7 +4,9 @@
     android:layout_height="72dp"
     android:gravity="center_vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:weightSum="11">
+    android:weightSum="11"
+    android:background="@drawable/background"
+   >
     <TextView
         android:id="@+id/task_item"
         android:layout_width="wrap_content"

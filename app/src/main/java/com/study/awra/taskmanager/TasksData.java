@@ -2,6 +2,7 @@ package com.study.awra.taskmanager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class TasksData {
@@ -12,7 +13,7 @@ public class TasksData {
         mTasks = new ArrayList<>();
 //
         for(int i=0;i<50;++i){
-            mTasks.add(new Task("Task #"+i,i%4));
+            mTasks.add(new Task("Task #"+i, Task.PriorityTask.random()));
 //
         }
     }
@@ -25,7 +26,7 @@ public class TasksData {
         }
     }
 
-    private  void addTask(String title, int priority) {
+    private  void addTask(String title, Task.PriorityTask priority) {
         mTasks.add(new Task(title,priority));
     }
 
