@@ -9,7 +9,6 @@ public class Task {
     private String mTaskTitle;
     private PriorityTask mPriority  ;
     private UUID ID;
-    private Context mContext;
 
     public Task(String taskTitle, PriorityTask priority) {
         mTaskTitle = taskTitle;
