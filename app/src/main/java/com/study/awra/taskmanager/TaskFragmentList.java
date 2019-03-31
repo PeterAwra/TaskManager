@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class TaskFragmentList extends Fragment {
+public class TaskFragmentList extends MyWithTitleFragment {
     List<Task> mData;
     Context mContext;
 
@@ -53,5 +53,4 @@ public class TaskFragmentList extends Fragment {
         mContext=getActivity();
 
     }
-
 }

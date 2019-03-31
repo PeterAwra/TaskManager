@@ -3,4 +3,6 @@
     <string name="p1">Приоритет 1</string>
     <string name="title_task">Hазвание</string>
     <string name="priority_4">Приоритет 4</string>
+    <string name="tasks">Tasks</string>
+    <string name="productivity">Productivity</string>
 </resources>
