@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Task Manager</string>
-    <string name="p1">Приоритет 1</string>
-    <string name="title_task">Hазвание</string>
-    <string name="priority_4">Приоритет 4</string>
+    <string name="title_task">Name title</string>
+    <string name="priority_1">Priority 1</string>
+    <string name="priority_2">Priority 2</string>
+    <string name="priority_3">Priority 3</string>
+    <string name="priority_4">Priority 4</string>
+    <string name="tasks">Tasks</string>
+    <string name="productivity">Productivity</string>
+    <string name="s1_no_tasks">You have done everything today!</string>
+    <string name="s2_no_tasks">Enjoy your free evening.</string>
 </resources>

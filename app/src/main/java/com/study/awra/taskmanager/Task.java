@@ -1,11 +1,13 @@
 package com.study.awra.taskmanager;
 
 import android.content.Context;
+import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.UUID;
 
-public class Task {
+public class Task implements Serializable {
     private String mTaskTitle;
     private PriorityTask mPriority  ;
     private UUID ID;

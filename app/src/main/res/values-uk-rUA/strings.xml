@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><string name = "title_task">Назва завдання</string>
+         <string name = "priority_1"> Пріоритет 1 </string>
+         <string name = "priority_2"> Пріоритет 2 </string>
+         <string name = "priority_3"> Пріоритет 3 </string>
+         <string name = "priority_4"> Пріоритет 4 </string>
+         <string name = "tasks"> Задачі </string>
+         <string name = "productivity"> Продуктивність </string>
+         <string name = "s1_no_tasks"> Ви все зробили сьогодні! </string>
+         <string name = "s2_no_tasks"> Насолоджуйтесь вільним вечором.</string>
+         <string name="app_name">Task Manager</string>
+</resources>
