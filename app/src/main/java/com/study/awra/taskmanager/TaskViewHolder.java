@@ -22,7 +22,7 @@ class TaskViewHolder extends RecyclerView.ViewHolder {
 
     void setDataTask(Task task) {
         TextView tv_tasl=mView.findViewById(R.id.task_item);
-        tv_tasl.setText(MessageFormat.format("{0}   {1}", task.getTaskTitle(), task.getPriority().toString()));
+        tv_tasl.setText( task.getTaskTitle());
         ImageView imageView=mView.findViewById(R.id.task_priority);
         GradientDrawable shapeDrawable= (GradientDrawable) imageView.getDrawable();
         shapeDrawable.setColor(colorPointPriority(task.getPriority()));

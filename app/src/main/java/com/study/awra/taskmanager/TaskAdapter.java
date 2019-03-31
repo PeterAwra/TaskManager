@@ -15,16 +15,17 @@ class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     private ClickTaskList mClickTaskList;
     private Context mContext;
 
-    public TaskAdapter(Context context, List<Task> taskList, ClickTaskList clickTaskList) {
+    public TaskAdapter(Context context, ClickTaskList clickTaskList) {
         mContext = context;
         mTaskList=new ArrayList<>();
-        setData(taskList);
         mClickTaskList=clickTaskList;
 
     }
 
-    private void setData(List<Task> taskList) {
+    public void setData(List<Task> taskList) {
+        mTaskList.clear();
         mTaskList.addAll(taskList);
+        notifyDataSetChanged();
     }
 
     @NonNull

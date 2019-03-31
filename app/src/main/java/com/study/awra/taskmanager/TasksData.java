@@ -12,9 +12,9 @@ public class TasksData {
     private TasksData() {
         mTasks = new ArrayList<>();
 //
-//        for(int i=0;i<50;++i){
-//            mTasks.add(new Task("Task #"+i, Task.PriorityTask.random()));
-//        }
+        for(int i=0;i<10;++i){
+            mTasks.add(new Task("Task #"+i, Task.PriorityTask.random())); }
+//
     }
 
     public static TasksData get(){
