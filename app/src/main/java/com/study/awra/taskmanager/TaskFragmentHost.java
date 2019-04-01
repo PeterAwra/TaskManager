@@ -2,17 +2,16 @@ package com.study.awra.taskmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class TaskFragmentHost extends AppCompatActivity {
+    private MyPagerAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
