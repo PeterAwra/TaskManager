@@ -44,8 +44,8 @@ public class AddTaskFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) { }
         });
-        String mTextPrioriti="  "+getString(R.string.priority_4);
-        SpannableString spannableText=new SpannableString(mTextPrioriti);
+        String mTextPrioriti="  "+getString(R.string.priority_text);
+        SpannableString spannableText=new SpannableString("  "+mTextPrioriti+" "+4);
         BulletSpan bulletSpan = new BulletSpan(20, Color.BLUE);
         spannableText.setSpan(new ImageSpan(getContext(),R.drawable.point,ImageSpan.ALIGN_BASELINE),0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mPriority.setText(spannableText);

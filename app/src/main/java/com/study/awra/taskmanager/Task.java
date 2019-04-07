@@ -1,18 +1,23 @@
 package com.study.awra.taskmanager;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
-import java.util.Random;
 import java.util.UUID;
-
+@Entity
 public class Task implements Serializable {
+    private static final long serialVersionUID = 262893905644368855L;
+    @PrimaryKey(autoGenerate = true)
+    private int ID;
     private String mTaskTitle;
-    private PriorityTask mPriority  ;
-    private UUID ID;
+    private int mPriority;
 
-    public Task(String taskTitle, PriorityTask priority) {
-        mTaskTitle = taskTitle;
-        mPriority = priority;
-        ID=UUID.randomUUID();
+
+    public Task(String taskTitle, int priority) {
+        setPriority(priority);
+        setTaskTitle(taskTitle);
     }
 
     public String getTaskTitle() {
@@ -23,27 +28,19 @@ public class Task implements Serializable {
         mTaskTitle = taskTitle;
     }
 
-    public PriorityTask getPriority() {
+    public int getPriority() {
         return mPriority;
     }
 
-    public void setPriority(PriorityTask priority) {
+    public void setPriority(int priority) {
         mPriority = priority;
     }
 
-    public UUID getID() {
+    public int getID() {
         return ID;
     }
 
-    enum  PriorityTask{
-        PRIORITY_1,
-        PRIORITY_2,
-        PRIORITY_3,
-        PRIORITY_4;
-
-        public static PriorityTask random() {
-            PriorityTask[] values = PriorityTask.values();
-            return values[new Random().nextInt(values.length)];
-        }
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

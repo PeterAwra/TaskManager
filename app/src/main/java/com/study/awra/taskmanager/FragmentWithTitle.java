@@ -2,13 +2,13 @@ package com.study.awra.taskmanager;
 
 import android.support.v4.app.Fragment;
 
-abstract class MyWithTitleFragment extends Fragment {
+abstract class FragmentWithTitle extends Fragment {
      String mTitle;
 
      public String getTitle(){
          return mTitle;
      }
-     public MyWithTitleFragment setTitle (String title){
+     public FragmentWithTitle setTitle (String title){
          mTitle=title;
          return this;
      }

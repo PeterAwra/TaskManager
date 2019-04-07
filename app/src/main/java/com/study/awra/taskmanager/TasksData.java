@@ -11,32 +11,33 @@ public class TasksData {
 
     private TasksData() {
         mTasks = new ArrayList<>();
-//
-        for(int i=0;i<10;++i){
-            mTasks.add(new Task("Task #"+i, Task.PriorityTask.random())); }
-//
+        AppDataBase dataBase = App.getInstance().mDataBase;
+        mTasks= dataBase.mTaskDao().getAllTask();
+    }
+
+    public void fakeData(int count) {
+        for(int i=1;i<=count;i++)
+            mTasks.add(new Task("Task #"+i,new Random().nextInt(4)));
     }
 
     public static TasksData get(){
-        if(sTasksData!=null)
-            return sTasksData;
-        else {
-             return new TasksData();
-        }
+        if(sTasksData==null)
+            sTasksData=new TasksData();
+        return sTasksData;
     }
 
-    private  void addTask(String title, Task.PriorityTask priority) {
+    public   void addTask(String title, int priority) {
         mTasks.add(new Task(title,priority));
+    }
+    public   void addTask(Task task) {
+        mTasks.add(task);
     }
 
     public List<Task> getTasksData() {
         return mTasks ;
     }
-    public Task get(UUID id){
-        for (Task task:mTasks) {
-            if (task.getID()==id)
-                return task;
-        }
-        return null;
+
+    public int size() {
+        return mTasks.size();
     }
 }

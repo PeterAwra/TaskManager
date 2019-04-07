@@ -15,7 +15,6 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
-        <item name="android:elevation">3dp</item>
     </style>
 
     <style name="MyTabTextAppearance" parent="TextAppearance.Design.Tab">

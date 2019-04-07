@@ -1,6 +1,5 @@
 package com.study.awra.taskmanager;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,10 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 class MyPagerAdapter extends FragmentPagerAdapter {
-    private List<MyWithTitleFragment> mFragments;
+    private List<FragmentWithTitle> mFragments;
 
 
-    public void addFragments(MyWithTitleFragment...fragment) {
+    public void addFragments(FragmentWithTitle...fragment) {
         mFragments = Arrays.asList(fragment);
 
     }
