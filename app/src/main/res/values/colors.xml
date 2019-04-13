@@ -15,8 +15,15 @@
     <color name="darkish_pink">#ef4481</color>
     <color name="swipe_delete">#E1FF0707</color>
     <color name="swipe_completed">#E22FFF38</color>
-    <color name="point_graph">#a5aedb</color>
-    <color name="line_graph">#993f51b5</color>
-    <color name="line_y_graph">#333f51b5</color>
-    <color name="color_graph">#8dd5dcf7</color>
+    <color name="color_under_line_graph">#8dd5dcf7</color>
+    <color name="color_graph_line">#993f51b5</color>
+    <color name="color_graph_line_x">#333f51b5</color>
+    <color name="color_graph_line_point">#993f51b5</color>
+    <color name="color_graph_point">#AFB6F1</color>
+    <color name="color_under_line_graph_default">#00FF2B2B</color>
+    <color name="color_graph_line_default">#000</color>
+    <color name="color_graph_line_x_default">#000</color>
+    <color name="color_graph_line_point_default">#000</color>
+    <color name="color_graph_point_default">#000</color>
+    <color name="color_text_default">#000</color>
 </resources>

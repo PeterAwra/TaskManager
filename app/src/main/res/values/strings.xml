@@ -7,4 +7,5 @@
     <string name="s1_no_tasks">You have done everything today!</string>
     <string name="s2_no_tasks">Enjoy your free evening.</string>
     <string name="completed_task">tasks completed</string>
+    <string name="undo">ОТМЕНА</string>
 </resources>

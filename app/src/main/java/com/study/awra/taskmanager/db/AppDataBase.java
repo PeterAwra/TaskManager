@@ -1,9 +1,9 @@
-package com.study.awra.taskmanager;
+package com.study.awra.taskmanager.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
-@Database(entities = {Task.class},version = 1)
+@Database(entities = {Task.class},version = 1,exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
-    abstract TaskDao mTaskDao();
+    public abstract TaskDao mTaskDao();
 }

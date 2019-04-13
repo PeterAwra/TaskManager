@@ -1,4 +1,4 @@
-package com.study.awra.taskmanager;
+package com.study.awra.taskmanager.db;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;

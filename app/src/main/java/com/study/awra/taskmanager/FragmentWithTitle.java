@@ -3,13 +3,13 @@ package com.study.awra.taskmanager;
 import android.support.v4.app.Fragment;
 
 abstract class FragmentWithTitle extends Fragment {
-     String mTitle;
+     private String title;
 
      public String getTitle(){
-         return mTitle;
+         return title;
      }
      public FragmentWithTitle setTitle (String title){
-         mTitle=title;
+         this.title =title;
          return this;
      }
  }

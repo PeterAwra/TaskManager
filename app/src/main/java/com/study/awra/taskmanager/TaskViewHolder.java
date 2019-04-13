@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.study.awra.taskmanager.db.Task;
+
 class TaskViewHolder extends RecyclerView.ViewHolder {
     private final Context mContext;
     private TextView mTextView;
@@ -16,8 +18,8 @@ class TaskViewHolder extends RecyclerView.ViewHolder {
     TaskViewHolder(Context context, @NonNull View itemView) {
         super(itemView);
         mContext=context;
-        mTextView=itemView.findViewById(R.id.task_item);
-        mShapeDrawable= (GradientDrawable) ((ImageView) itemView.findViewById(R.id.task_priority)).getDrawable();
+        mTextView=itemView.findViewById(R.id.item_priority_text);
+        mShapeDrawable= (GradientDrawable) ((ImageView) itemView.findViewById(R.id.item_priority_color)).getDrawable();
     }
 
     void setDataTask(Task task) {

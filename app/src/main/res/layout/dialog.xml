@@ -17,14 +17,16 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="22dp"
         android:layout_marginBottom="22dp"
-        android:text="@string/app_name"
+        android:text="@string/priority_text"
         android:layout_marginLeft="16dp" />
 
-    <ListView
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list_view_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MyDialogPriority"/>
+        style="@style/MyDialogPriority"
+        />
     <Button
         android:id="@+id/cancel_dialog"
         android:background="?attr/selectableItemBackground"
@@ -38,7 +40,7 @@
         android:textColor="@color/darkish_pink"
         android:letterSpacing="0.04"
         android:gravity="center_horizontal"
-        android:text="ОТМЕНА"
+        android:text="@string/undo"
         />
 
 </LinearLayout>

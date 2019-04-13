@@ -1,6 +1,5 @@
-package com.study.awra.taskmanager;
+package com.study.awra.taskmanager.AddTask;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -15,23 +14,25 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class AddTaskActivity extends AppCompatActivity {
-    private View mButtonAddTask;
-    private TextView mPriorityView;
-    private Context mContext;
+import com.study.awra.taskmanager.R;
+import com.study.awra.taskmanager.db.Task;
+
+public class AddTaskActivity extends AppCompatActivity implements ChosenPriorityListener {
+
+    private View buttonAddTask;
+    private TextView priorityView;
     private int mPriority=3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mContext=this;
         final EditText inputTask = findViewById(R.id.et_input_task);
-        mButtonAddTask =findViewById(R.id.bt_add_task);
-        mPriorityView =findViewById(R.id.tv_choose_priority);
+        buttonAddTask =findViewById(R.id.bt_add_task);
+        priorityView =findViewById(R.id.tv_choose_priority);
         setPriorityView(mPriority);
-        mButtonAddTask.setVisibility(View.INVISIBLE);
-        mButtonAddTask.setOnClickListener(new View.OnClickListener() {
+        buttonAddTask.setVisibility(View.INVISIBLE);
+        buttonAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
@@ -45,22 +46,16 @@ public class AddTaskActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().isEmpty()) mButtonAddTask.setVisibility(View.INVISIBLE);
-                else  mButtonAddTask.setVisibility(View.VISIBLE);
+                if(s.toString().isEmpty()) buttonAddTask.setVisibility(View.INVISIBLE);
+                else  buttonAddTask.setVisibility(View.VISIBLE);
             }
             @Override
             public void afterTextChanged(Editable s) { }
         });
-        mPriorityView.setOnClickListener(new View.OnClickListener() {
+        priorityView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogPriorityChoose dialogPriority = new DialogPriorityChoose();
-                dialogPriority.setResultDialogChoosePriority(new ResultDialogChoosePriority() {
-                    @Override
-                    public void onResult(int priority) {
-                        setPriorityView(priority);
-                    }
-                });
                 dialogPriority.show(getSupportFragmentManager(),"tag");
             }
         });
@@ -75,7 +70,12 @@ public class AddTaskActivity extends AppCompatActivity {
 //       gradientDrawable.setBounds();
         gradientDrawable.setColor(color[priority]);
         spannableText.setSpan(color_point,0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mPriorityView.setText(spannableText);
+        priorityView.setText(spannableText);
         mPriority=priority;
+    }
+
+    @Override
+    public void onResult(int priority) {
+        setPriorityView(priority);
     }
 }

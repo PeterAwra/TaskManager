@@ -1,9 +1,8 @@
-package com.study.awra.taskmanager;
+package com.study.awra.taskmanager.db;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class TasksData {
     private static TasksData sTasksData;
@@ -11,7 +10,7 @@ public class TasksData {
 
     private TasksData() {
         mTasks = new ArrayList<>();
-        AppDataBase dataBase = App.getInstance().mDataBase;
+        AppDataBase dataBase = App.getInstance().getDataBase();
         mTasks= dataBase.mTaskDao().getAllTask();
     }
 
