@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="CustomGraph">
+    <attr format="color" name="colorPoint"/>
+    <attr format="color" name="colorLinePoint"/>
+    <attr format="color" name="colorLineX"/>
+    <attr format="color" name="colorLine"/>
+    <attr format="color" name="colorUnderLine"/>
+    <attr format="dimension" name="widthLine"/>
+    <attr format="dimension" name="radiusPoint"/>
+    <attr name="textSize" format="dimension"/>
+    <attr name="textMargin" format="dimension"/>
+    <attr name="textColor" format="color"/>
+    <attr name="textStyle" format="reference"/>
+  </declare-styleable>
+</resources>
