@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="priority_color">
-        <item>@color/priority1</item>
-        <item>@color/priority2</item>
-        <item>@color/priority3</item>
-        <item>@color/priority4</item>
-    </array>
+  <array name="priority_color">
+    <item>@color/priority1</item>
+    <item>@color/priority2</item>
+    <item>@color/priority3</item>
+    <item>@color/priority4</item>
+  </array>
 </resources>

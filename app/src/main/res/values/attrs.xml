@@ -8,9 +8,9 @@
     <attr format="color" name="colorUnderLine"/>
     <attr format="dimension" name="widthLine"/>
     <attr format="dimension" name="radiusPoint"/>
-    <attr name="textSize" format="dimension"/>
-    <attr name="textMargin" format="dimension"/>
-    <attr name="textColor" format="color"/>
-    <attr name="textStyle" format="reference"/>
+    <attr format="dimension" name="textSize"/>
+    <attr format="dimension" name="textMargin"/>
+    <attr format="color" name="textColor"/>
+    <attr format="reference" name="textStyle"/>
   </declare-styleable>
 </resources>

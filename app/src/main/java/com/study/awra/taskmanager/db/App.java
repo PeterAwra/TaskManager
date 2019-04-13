@@ -4,21 +4,23 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 
 public class App extends Application {
-    AppDataBase mDataBase;
-    public static App instance;
+  public static App instance;
+  AppDataBase mDataBase;
 
-    public AppDataBase getDataBase() {
-        return mDataBase;
-    }
+  public static App getInstance() {
+    return instance;
+  }
 
-    public static App getInstance() {
-        return instance;
-    }
+  public AppDataBase getDataBase() {
+    return mDataBase;
+  }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance=this;
-        mDataBase= Room.databaseBuilder(instance,AppDataBase.class,"DBTaskManager.db").allowMainThreadQueries().build();
-    }
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    instance = this;
+    mDataBase = Room.databaseBuilder(instance, AppDataBase.class, "DBTaskManager.db")
+        .allowMainThreadQueries()
+        .build();
+  }
 }
