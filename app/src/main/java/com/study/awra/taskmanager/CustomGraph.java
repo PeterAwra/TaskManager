@@ -100,13 +100,16 @@ class CustomGraph extends View {
   }
 
   private void makePointGraph() {
-    paddingX = radiusPoint + lineWidth + textSize;
-    paddingY = textSize + marginText + radiusPoint + lineWidth;
-    float scaleX = (widthView - 2 * paddingX) / (maxX - 1);
-    float scaleY = (heightView - 2 * paddingY) / maxY;
-    for (int i = 0; i < maxX; i++) {
-      points[i] = new Point((int) (i * scaleX + paddingX),
-          (int) (heightView - (paddingY + data[i] * scaleY)));
+    if (maxX != 0 && maxY != 0) {
+      paddingX = radiusPoint + lineWidth + textSize;
+      paddingY = textSize + marginText + radiusPoint + lineWidth;
+      float scaleX = (widthView - 2 * paddingX) / (maxX - 1);
+      float scaleY = (heightView - 2 * paddingY) / maxY;
+      for (int i = 0; i < maxX; i++) {
+        points[i] = new Point((int) (i * scaleX + paddingX),
+            (int) (heightView - (paddingY + data[i] * scaleY)));
+      }
+      if(maxX==1)points[0].set(widthView/2,heightView/2);
     }
   }
 
@@ -128,11 +131,13 @@ class CustomGraph extends View {
   }
 
   private void drawGraph(Canvas canvas) {
-    drawRegionGraph(canvas);
-    drawLinesScaleX(canvas);
-    drawLineGraph(canvas);
-    drawPointGraph(canvas);
-    drawTextScaleX(canvas);
+    if (maxX != 0 && maxY != 0) {
+      if (maxX > 1) drawRegionGraph(canvas);
+      drawLinesScaleX(canvas);
+      drawLineGraph(canvas);
+      drawPointGraph(canvas);
+      drawTextScaleX(canvas);
+    }
   }
 
   private void drawTextScaleX(Canvas canvas) {

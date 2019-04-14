@@ -2,7 +2,9 @@ package com.study.awra.taskmanager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,35 +20,36 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.study.awra.taskmanager.AddTask.AddTaskActivity;
 import com.study.awra.taskmanager.db.App;
+import com.study.awra.taskmanager.db.DaoProductivity;
+import com.study.awra.taskmanager.db.Productivity;
 import com.study.awra.taskmanager.db.Task;
 import com.study.awra.taskmanager.db.TaskDao;
+import java.sql.Date;
 
 import static android.app.Activity.RESULT_OK;
 
-public class TaskFragmentList extends FragmentWithTitle {
-  private Context mContext;
+public class TaskFragmentList extends FragmentWithTitle  {
+  public static final String SAVE_COMPLETED_TASK = "SAVE_COMPLETED_TASK";
+  public static final String COMPLETED_TASK = "COMPLETED_TASK";
+  private Context context;
   private int requestCodeAddTask = 5555;
   private TaskAdapter adapter;
   private LinearLayout ll;
   private TaskDao taskDao;
-  private RecyclerView recyclerView;
+  private DaoProductivity daoProductivity;
+  private OnChangeCountCompleteTaskListener onChangeCountCompleteTaskListener;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    taskDao = App.instance.getDataBase().mTaskDao();
-    mContext = getActivity();
-    adapter = new TaskAdapter(mContext);
+    taskDao = App.instance.getDataBase().taskDao();
+    daoProductivity = App.instance.getDataBase().daoProductivity();
+    context = getActivity();
+    adapter = new TaskAdapter(context);
     adapter.setClickTaskList(new ClickTaskList() {
       @Override
       public void ClickTask(Task task) {
-        Toast.makeText(mContext, task.getTaskTitle(), Toast.LENGTH_SHORT).show();
-      }
-    });
-    adapter.setClickLongTaskList(new ClickLongTaskList() {
-      @Override
-      public void ClickLongTask(Task task) {
-        Toast.makeText(mContext, task.getPriority() + "", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, task.getTaskTitle(), Toast.LENGTH_SHORT).show();
       }
     });
     adapter.setChangeData(new ListenerChangeData() {
@@ -56,23 +59,44 @@ public class TaskFragmentList extends FragmentWithTitle {
         refresh();
       }
 
-      @Override
-      public void add(Task task) {
-
+      @Override public void complete(Task task) {
+        taskDao.deleteTask(task);
+        SharedPreferences sharedPreferences =
+            context.getSharedPreferences(SAVE_COMPLETED_TASK, Context.MODE_PRIVATE);
+        int completed_task = sharedPreferences.getInt(COMPLETED_TASK, 0);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(COMPLETED_TASK, completed_task + 1);
+        edit.apply();
+        addStatisticProductivity();
+        refresh();
       }
     });
   }
+
+  private void addStatisticProductivity() {
+    Date day = new Date(System.currentTimeMillis() - SystemClock.elapsedRealtime());
+    Productivity item = daoProductivity.isHas(day);
+    if (item != null) {
+      item.countCompleteTask += 1;
+      daoProductivity.update(item);
+    } else {
+      Productivity productivity = new Productivity(day.getTime());
+      productivity.countCompleteTask = 1;
+      daoProductivity.addNewDay(productivity);
+    }
+  }
+
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.list_task_fragment, container, false);
-    recyclerView = view.findViewById(R.id.rv);
+    RecyclerView recyclerView = view.findViewById(R.id.rv);
     recyclerView.setLayoutManager(
-        new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
     recyclerView.addItemDecoration(
-        new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     recyclerView.setAdapter(adapter);
     ll = view.findViewById(R.id.no_task);
 
@@ -83,7 +107,6 @@ public class TaskFragmentList extends FragmentWithTitle {
         startActivityForResult(new Intent(getContext(), AddTaskActivity.class), requestCodeAddTask);
       }
     });
-    refresh();
     final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
@@ -103,8 +126,16 @@ public class TaskFragmentList extends FragmentWithTitle {
     if (requestCode == requestCodeAddTask && resultCode == RESULT_OK) {
       Task task = (Task) data.getSerializableExtra(AddTaskActivity.class.getName());
       taskDao.addTask(task);
-      //            adapter.addData(task);
-      //            refresh();
+    }
+  }
+
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
+    if (context instanceof OnChangeCountCompleteTaskListener) {
+      onChangeCountCompleteTaskListener = (OnChangeCountCompleteTaskListener) context;
+    } else {
+      throw new UnsupportedOperationException(
+          "Activity must implement interface OnChangeCountCompleteTaskListener");
     }
   }
 
@@ -115,15 +146,15 @@ public class TaskFragmentList extends FragmentWithTitle {
     } else {
       ll.setVisibility(View.VISIBLE);
     }
-    //        FragmentManager fragmentManager = getFragmentManager();
-    //        Fragment fragment = fragmentManager.getFragments().get(0);
-    //        fragmentManager.beginTransaction().replace(R.id.container_fragment,fragment).commit();
-
+    onChangeCountCompleteTaskListener.refresh();
   }
 
   public interface ListenerChangeData {
     public void delete(Task task);
 
-    public void add(Task task);
+    public void complete(Task task);
+  }
+  public interface OnChangeCountCompleteTaskListener {
+    public void refresh();
   }
 }

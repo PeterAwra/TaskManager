@@ -11,7 +11,7 @@ public class TasksData {
   private TasksData() {
     mTasks = new ArrayList<>();
     AppDataBase dataBase = App.getInstance().getDataBase();
-    mTasks = dataBase.mTaskDao().getAllTask();
+    mTasks = dataBase.taskDao().getAllTask();
   }
 
   public static TasksData get() {

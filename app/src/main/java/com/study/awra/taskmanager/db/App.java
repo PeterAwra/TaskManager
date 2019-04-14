@@ -21,6 +21,7 @@ public class App extends Application {
     instance = this;
     mDataBase = Room.databaseBuilder(instance, AppDataBase.class, "DBTaskManager.db")
         .allowMainThreadQueries()
+        .fallbackToDestructiveMigration()
         .build();
   }
 }
