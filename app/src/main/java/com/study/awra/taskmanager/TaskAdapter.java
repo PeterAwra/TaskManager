@@ -1,6 +1,8 @@
 package com.study.awra.taskmanager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -8,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.study.awra.taskmanager.db.App;
+import com.study.awra.taskmanager.db.DaoProductivity;
+import com.study.awra.taskmanager.db.Productivity;
 import com.study.awra.taskmanager.db.Task;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
   private List<Task> taskList;
@@ -59,6 +65,9 @@ class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 TaskAdapter.this.notifyItemInserted(pos);
               }
             });
+    View view = snackbar.setActionTextColor(Color.WHITE)
+        .getView();
+    view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
     snackbar.addCallback(new Snackbar.Callback() {
       @Override public void onDismissed(Snackbar transientBottomBar, int event) {
         super.onDismissed(transientBottomBar, event);
@@ -73,6 +82,35 @@ class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
   public void completedItem(int pos, RecyclerView.ViewHolder viewHolder) {
     final Task completeTask = taskList.remove(pos);
     showSnackbar(pos, viewHolder, completeTask);
+    addToStatistic();
+  }
+
+  private void addToStatistic() {
+    {
+      SharedPreferences sharedPreferences =
+          context.getSharedPreferences(MainActivity.SAVE_COMPLETED_TASK, Context.MODE_PRIVATE);
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putInt(MainActivity.COMPLETED_TASK,
+          sharedPreferences.getInt(MainActivity.COMPLETED_TASK, 0) + 1);
+      editor.apply();
+    }
+    {
+      new Thread(new Runnable() {
+        @Override public void run() {
+          int presentDay = Calendar.getInstance(Locale.getDefault()).get(Calendar.DAY_OF_YEAR);
+          DaoProductivity daoProductivity = App.getInstance().getDataBase().daoProductivity();
+          Productivity day = daoProductivity.getDay(presentDay);
+          if (day == null) {
+            Productivity productivityDay = new Productivity(presentDay);
+            productivityDay.countCompleteTask = 1;
+            daoProductivity.addNewDay(productivityDay);
+          } else {
+            day.countCompleteTask += 1;
+            daoProductivity.update(day);
+          }
+        }
+      }).start();
+    }
   }
 
   private void deleteTaskDB(final Task removeTask) {

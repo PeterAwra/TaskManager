@@ -12,7 +12,8 @@
   </style>
 
   <style name="MyTabLayout" parent="Widget.Design.TabLayout">
-    <item name="tabMaxWidth">200dp</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="tabMinWidth">200dp</item>
     <item name="tabIndicatorColor">#fbfbfb</item>
     <item name="tabIndicatorHeight">2dp</item>
     <item name="android:background">?attr/colorPrimary</item>

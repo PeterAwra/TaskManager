@@ -8,9 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.study.awra.taskmanager.db.App;
+import com.study.awra.taskmanager.db.DaoProductivity;
+import com.study.awra.taskmanager.db.Productivity;
 import com.study.awra.taskmanager.db.Task;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
   public static final String SAVE_COMPLETED_TASK = "SAVE_COMPLETED_TASK";
@@ -24,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = findViewById(R.id.tool_bar);
     setSupportActionBar(toolbar);
     FragmentManager supportFragmentManager = getSupportFragmentManager();
-    if(savedInstanceState==null)
-    supportFragmentManager.beginTransaction()
-        .add(R.id.container_fragment, new PagerFragment())
-        .commit();
+    if (savedInstanceState == null) {
+      supportFragmentManager.beginTransaction()
+          .add(R.id.container_fragment, new PagerFragment())
+          .commit();
+    }
   }
 
   @Override
@@ -59,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void deleteAll() {
+    new Thread(new Runnable() {
+      @Override public void run() {
+        App.getInstance().getDataBase().deleteAll();
+        getSharedPreferences(SAVE_COMPLETED_TASK, MODE_PRIVATE).edit()
+            .putInt(COMPLETED_TASK, 0)
+            .apply();
+      }
+    }).start();
   }
 
   private void writeDeveloper() {
@@ -70,8 +85,20 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void fakeData() {
-    List<Task> tasks = new ArrayList<>();
+    deleteAll();
+    final List<Task> tasks = new ArrayList<>();
     for (int i = 0; i < 50; i++)
       tasks.add(new Task("Task fake  " + i, i % 4));
+    new Thread(new Runnable() {
+      @Override public void run() {
+        App.getInstance().getDataBase().taskDao().addTasks(tasks);
+        DaoProductivity daoProductivity = App.getInstance().getDataBase().daoProductivity();
+        int presentDay = Calendar.getInstance(Locale.getDefault()).get(Calendar.DAY_OF_YEAR);
+        for (int i = 1; i <= 7; i++) {
+          daoProductivity.addNewDay(
+              new Productivity(presentDay - i).setCountCompleteTask(new Random().nextInt(10)));
+        }
+      }
+    }).start();
   }
 }

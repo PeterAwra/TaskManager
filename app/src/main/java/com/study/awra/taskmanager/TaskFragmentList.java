@@ -26,6 +26,7 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
   private TaskAdapter adapter;
   private SwipeRefreshLayout swipeRefreshLayout;
   private Context context;
+  private View fragmentNoTask;
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
@@ -49,6 +50,7 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
     styleRecycler(recyclerView);
     floatingActionButton.setOnClickListener(this);
     swipeRefreshLayout.setOnRefreshListener(this);
+    fragmentNoTask = view.findViewById(R.id.no_task);
     return view;
   }
 
@@ -87,22 +89,31 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
     swipeRefreshLayout.setRefreshing(false);
   }
 
+  private void refreshFragment() {
+    if (adapter.getData().size() > 0) {
+      fragmentNoTask.setVisibility(View.INVISIBLE);
+    } else {
+      fragmentNoTask.setVisibility(View.VISIBLE);
+    }
+  }
+
   public class RefreshData extends AsyncTask<Void, Void, List<Task>> {
     private final WeakReference<TaskFragmentList> fragmentListWR;
 
     public RefreshData(TaskFragmentList fragmentListWeakReference) {
-      this.fragmentListWR =new WeakReference<>(fragmentListWeakReference);
+      this.fragmentListWR = new WeakReference<>(fragmentListWeakReference);
     }
 
     @Override protected List<Task> doInBackground(Void... voids) {
       return App.getInstance().getDataBase().taskDao().getAllTask();
     }
 
-    @Override protected void onPostExecute(List<Task> task) {
-      super.onPostExecute(task);
-      TaskFragmentList taskFragmentList=fragmentListWR.get();
-      if(taskFragmentList!=null)
-      taskFragmentList.adapter.setData(task);
+    @Override protected void onPostExecute(List<Task> tasks) {
+      TaskFragmentList taskFragmentList = fragmentListWR.get();
+      if (taskFragmentList != null) {
+        taskFragmentList.adapter.setData(tasks);
+      }
+      refreshFragment();
     }
   }
 }

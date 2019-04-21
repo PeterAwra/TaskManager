@@ -2,7 +2,6 @@ package com.study.awra.taskmanager;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import com.study.awra.taskmanager.db.App;
 import com.study.awra.taskmanager.db.Productivity;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class ProductivityFragment extends FragmentWithTitle {
@@ -36,55 +37,59 @@ public class ProductivityFragment extends FragmentWithTitle {
         swipeRefreshLayout.setRefreshing(false);
       }
     });
-    //refresh();
+    refresh();
     return view;
   }
 
   void refresh() {
-    int showDays = 7;
-    int[] valueForDay = new int[showDays];
-    String[] nameDay = new String[showDays];
-    getListDaysStatistic(showDays, valueForDay, nameDay);
-    int task_completed = getCompletedTaskFromPreferences();
-    drawData(valueForDay, nameDay, task_completed);
-  }
-
-  private void drawData(int[] valueForDay, String[] nameDay, int task_completed) {
-    mGraph.setData(valueForDay, nameDay);
+    UpdateGraphThread updateGraphThread = new UpdateGraphThread();
+    updateGraphThread.start();
+    int task_completed =
+        context.getSharedPreferences(MainActivity.SAVE_COMPLETED_TASK, Context.MODE_PRIVATE)
+            .getInt(MainActivity.COMPLETED_TASK, 0);
     mTextView.setText(String.format(Locale.getDefault(), "%d  %s", task_completed,
         getString(R.string.completed_task)));
-    mGraph.requestLayout();
   }
 
-  private void getListDaysStatistic(int showDays, int[] valueForDay, String[] nameDay) {
-    long durationDay = 1000 * 60 * 60 * 24;
-    long presentDay = System.currentTimeMillis() - SystemClock.elapsedRealtime() + 1000;
-    for (int i = 0; i < showDays; i++) {
-      long date = presentDay - (showDays - i - 1) * durationDay;
-      Productivity productivity = getProductivityFromBase(date);
-      if (productivity != null) {
-        valueForDay[i] = productivity.countCompleteTask;
-      } else {
-        valueForDay[i] = 0;
+  private class UpdateGraphThread extends Thread {
+    @Override public void run() {
+      int showDays = 10;
+      int[] valueForDay = new int[showDays];
+      String[] nameDay = new String[showDays];
+      int presentDay = Calendar.getInstance(Locale.getDefault()).get(Calendar.DAY_OF_YEAR);
+      for (int i = 0; i < showDays; i++) {
+        int date = presentDay - (showDays - i - 1);
+        Productivity productivity = getProductivityFromBase(date);
+        if (productivity != null) {
+          valueForDay[i] = productivity.countCompleteTask;
+        } else {
+          valueForDay[i] = 0;
+        }
+        nameDay[i] = new SimpleDateFormat("E", Locale.getDefault()).format(
+            new Date(Calendar.getInstance(Locale.getDefault()).getTime().getTime() - 1000 * 60 * 60 * 24*(showDays-1-i)));
+
       }
-      nameDay[i] = getNameDay(date);
+      final int[] valueForDay1 = valueForDay;
+      final String[] nameDay2 = nameDay;
+      mGraph.post(new Runnable() {
+        @Override public void run() {
+          if (mGraph != null) {
+            mGraph.setData(valueForDay1, nameDay2);
+            mGraph.requestLayout();
+          }
+        }
+      });
+    }
+
+    private Productivity getProductivityFromBase(int date) {
+      return App.getInstance()
+          .getDataBase()
+          .daoProductivity()
+          .getDay(date);
     }
   }
 
-  private Productivity getProductivityFromBase(long date) {
-    return App.getInstance()
-        .getDataBase()
-        .daoProductivity()
-        .getDay(date);
-  }
-
-  private String getNameDay(long date) {
-    return new SimpleDateFormat("E", Locale.getDefault()).format(date);
-  }
-
-  private int getCompletedTaskFromPreferences() {
-    context.getResources();
-    return context.getSharedPreferences(MainActivity.SAVE_COMPLETED_TASK, Context.MODE_PRIVATE)
-        .getInt(MainActivity.COMPLETED_TASK, 0);
-  }
+  //private String getNameDay(int date) {
+  //  return new SimpleDateFormat("E", Locale.getDefault()).format(date);
+  //return date + "";}
 }
