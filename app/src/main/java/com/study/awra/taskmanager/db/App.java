@@ -1,6 +1,7 @@
 package com.study.awra.taskmanager.db;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 
 public class App extends Application {

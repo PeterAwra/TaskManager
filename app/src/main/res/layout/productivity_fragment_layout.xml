@@ -17,12 +17,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="3.5"
         >
 
       <com.study.awra.taskmanager.CustomGraph
           android:id="@+id/graph"
           android:layout_width="match_parent"
-          android:layout_height="300dp"
+          android:layout_height="0dp"
+          android:layout_weight="2"
+
           android:layout_margin="10dp"
           app:colorLine="@color/color_graph_line"
           app:colorLinePoint="@color/color_graph_line"
@@ -38,7 +41,8 @@
 
       <android.support.v7.widget.CardView
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="0dp"
+          android:layout_weight="1"
           >
 
         <TextView

@@ -28,6 +28,11 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
   private Context context;
   private View fragmentNoTask;
 
+  @Override public void onResume() {
+    super.onResume();
+    refresh();
+  }
+
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     this.context = context;
