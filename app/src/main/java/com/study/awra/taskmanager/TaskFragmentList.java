@@ -1,6 +1,7 @@
 package com.study.awra.taskmanager;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.study.awra.taskmanager.AddTask.AddTaskFragment;
+import com.study.awra.taskmanager.db.App;
+import com.study.awra.taskmanager.db.Task;
+import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class TaskFragmentList extends FragmentWithTitle implements View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -59,6 +64,8 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
   }
 
   public void refresh() {
+    RefreshData refreshData = new RefreshData(this);
+    refreshData.execute();
   }
 
   @Override public void onClick(View v) {
@@ -66,7 +73,8 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
       FragmentManager supportFragmentManager = ((MainActivity) context).getSupportFragmentManager();
       supportFragmentManager
           .beginTransaction()
-          .setCustomAnimations(R.animator.slide_down,R.animator.slide_in_up,R.animator.slide_down,R.animator.slide_in_up)
+          .setCustomAnimations(R.animator.slide_down, R.animator.slide_in_up, R.animator.slide_down,
+              R.animator.slide_in_up)
           .hide(supportFragmentManager.getFragments().get(0))
           .add(R.id.container_fragment, new AddTaskFragment())
           .addToBackStack(null)
@@ -77,5 +85,24 @@ public class TaskFragmentList extends FragmentWithTitle implements View.OnClickL
   @Override public void onRefresh() {
     refresh();
     swipeRefreshLayout.setRefreshing(false);
+  }
+
+  public class RefreshData extends AsyncTask<Void, Void, List<Task>> {
+    private final WeakReference<TaskFragmentList> fragmentListWR;
+
+    public RefreshData(TaskFragmentList fragmentListWeakReference) {
+      this.fragmentListWR =new WeakReference<>(fragmentListWeakReference);
+    }
+
+    @Override protected List<Task> doInBackground(Void... voids) {
+      return App.getInstance().getDataBase().taskDao().getAllTask();
+    }
+
+    @Override protected void onPostExecute(List<Task> task) {
+      super.onPostExecute(task);
+      TaskFragmentList taskFragmentList=fragmentListWR.get();
+      if(taskFragmentList!=null)
+      taskFragmentList.adapter.setData(task);
+    }
   }
 }

@@ -13,4 +13,5 @@
   <string name="s2_no_tasks"> Насолоджуйтесь вільним вечором.</string>
   <string name="app_name">Task Manager</string>
   <string name="completed_task">задач виконано</string>
+  <string name="undo">Відміна</string>
 </resources>

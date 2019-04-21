@@ -36,7 +36,7 @@ public class ProductivityFragment extends FragmentWithTitle {
         swipeRefreshLayout.setRefreshing(false);
       }
     });
-    refresh();
+    //refresh();
     return view;
   }
 

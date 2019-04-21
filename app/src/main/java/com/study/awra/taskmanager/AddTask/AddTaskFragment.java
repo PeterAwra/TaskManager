@@ -20,6 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.study.awra.taskmanager.MainActivity;
 import com.study.awra.taskmanager.R;
+import com.study.awra.taskmanager.db.App;
+import com.study.awra.taskmanager.db.Task;
+import com.study.awra.taskmanager.db.TaskDao;
 
 public class AddTaskFragment extends Fragment implements OnResultDialogListener {
   public static final String SAVE_PRIORITY = "save_priority";
@@ -85,14 +88,14 @@ public class AddTaskFragment extends Fragment implements OnResultDialogListener 
         imm.hideSoftInputFromWindow(inputTask.getWindowToken(),
             InputMethodManager.RESULT_UNCHANGED_SHOWN);
         fragmentManager.popBackStackImmediate();
+        InputTaskThread
+            inputTaskThraed =
+            new InputTaskThread(new Task(inputTask.getText().toString(), priority));
+        inputTaskThraed.start();
       }
     });
 
     return view;
-  }
-
-  @Override public void onAttachFragment(Fragment childFragment) {
-    super.onAttachFragment(childFragment);
   }
 
   private void setPriorityView(int priority) {
@@ -112,5 +115,18 @@ public class AddTaskFragment extends Fragment implements OnResultDialogListener 
 
   @Override public void onResultDialog(int priority) {
     setPriorityView(priority);
+  }
+
+  private class InputTaskThread extends Thread {
+    private Task task;
+
+    public InputTaskThread(Task task) {
+      this.task = task;
+    }
+
+    @Override public void run() {
+      TaskDao taskDao = App.getInstance().getDataBase().taskDao();
+      taskDao.addTask(task);
+    }
   }
 }

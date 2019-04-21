@@ -14,4 +14,5 @@
       
   <string name="s2_no_tasks">Наслаждайтесь свободным вечером.</string>
   <string name="completed_task">задач выполнено</string>
+  <string name="undo">Отмена</string>
 </resources>

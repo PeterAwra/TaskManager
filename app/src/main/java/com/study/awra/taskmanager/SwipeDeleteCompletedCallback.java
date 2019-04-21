@@ -37,14 +37,14 @@ public class SwipeDeleteCompletedCallback extends ItemTouchHelper.SimpleCallback
   }
 
   @Override
-  public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder,
+  public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder,
       int i) {
     int pos = viewHolder.getAdapterPosition();
     if (eventDelete && !eventSolve) {
-      mTaskAdapter.deleteItem(pos);
+      mTaskAdapter.deleteItem(pos,viewHolder);
     }
     if (!eventDelete && eventSolve) {
-      mTaskAdapter.completedItem(pos);
+      mTaskAdapter.completedItem(pos,viewHolder);
     }
   }
 
