@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container_fragment"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    tools:context=".MainActivity"
     >
-
-  <android.support.design.widget.TabLayout
-      android:id="@+id/tl"
+  <android.support.design.widget.AppBarLayout
+      android:id="@+id/app_bar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      style="@style/MyTabLayout"
-      />
-
-  <android.support.v4.view.ViewPager
-      android:id="@+id/vp"
+      android:layout_height="?actionBarSize"
+      >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:titleTextColor="@color/white"
+        />
+  </android.support.design.widget.AppBarLayout>
+  <FrameLayout
+      android:id="@+id/container_fragment"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
       />
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

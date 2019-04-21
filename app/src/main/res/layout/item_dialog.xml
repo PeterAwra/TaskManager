@@ -14,7 +14,7 @@
       android:id="@+id/dialog_item_priority_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_margin="16dp"
+      android:padding="16dp"
       android:background="?attr/selectableItemBackground"
       android:fontFamily="sans-serif-medium"
       android:gravity="center_vertical"

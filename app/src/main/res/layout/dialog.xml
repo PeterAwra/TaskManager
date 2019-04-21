@@ -7,7 +7,7 @@
     >
   <TextView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:layout_marginBottom="22dp"
       android:layout_marginEnd="16dp"
       android:layout_marginLeft="16dp"
@@ -20,7 +20,6 @@
       android:textSize="16sp"
       android:textStyle="normal"
       />
-
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/list_view_dialog"
@@ -38,7 +37,7 @@
       android:letterSpacing="0.04"
       android:padding="17dp"
       android:text="@string/undo"
-      android:textAlignment="textEnd"
+      android:layout_gravity="end|right"
       android:textColor="@color/darkish_pink"
       android:textSize="14sp"
       android:textStyle="normal"

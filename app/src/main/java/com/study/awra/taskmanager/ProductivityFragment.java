@@ -84,8 +84,7 @@ public class ProductivityFragment extends FragmentWithTitle {
 
   private int getCompletedTaskFromPreferences() {
     context.getResources();
-    return context.getSharedPreferences(TaskFragmentList.SAVE_COMPLETED_TASK, Context.MODE_PRIVATE)
-        .getInt(TaskFragmentList.COMPLETED_TASK, 0);
-    //return 11;
+    return context.getSharedPreferences(MainActivity.SAVE_COMPLETED_TASK, Context.MODE_PRIVATE)
+        .getInt(MainActivity.COMPLETED_TASK, 0);
   }
 }

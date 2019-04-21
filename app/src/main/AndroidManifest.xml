@@ -8,11 +8,10 @@
       android:icon="@drawable/icon"
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
-      android:supportsRtl="true"
+      android:supportsRtl="false"
       android:theme="@style/AppTheme">
     <activity
         android:name=".MainActivity"
-        android:screenOrientation="portrait"
         android:theme="@style/SplashScreen">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -20,7 +19,6 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".AddTask.AddTaskActivity"/>
   </application>
 
 </manifest>

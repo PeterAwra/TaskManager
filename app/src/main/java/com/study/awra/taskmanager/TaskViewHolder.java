@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.study.awra.taskmanager.db.Task;
 
 class TaskViewHolder extends RecyclerView.ViewHolder {
-  private final Context mContext;
+  private  Context mContext;
   private TextView mTextView;
   private GradientDrawable mShapeDrawable;
 

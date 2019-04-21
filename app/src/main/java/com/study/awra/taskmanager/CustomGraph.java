@@ -190,7 +190,6 @@ class CustomGraph extends View {
     paint.setStrokeWidth(lineWidth);
     paint.setColor(colorUnderLine);
     path.reset();
-    ;
     path.moveTo(paddingX, heightView - paddingY);
     for (Point point : points) {
       path.lineTo(point.x, point.y);

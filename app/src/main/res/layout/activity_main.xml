@@ -25,7 +25,7 @@
       <EditText
           android:id="@+id/et_input_task"
           android:layout_width="0dp"
-          android:layout_height="wrap_content"
+          android:layout_height="match_parent"
           android:layout_weight="10"
           android:background="@android:color/transparent"
           android:fontFamily="sans-serif"
