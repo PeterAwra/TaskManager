@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="line_width_graph">1dp</dimen>
+  <dimen name="radius_point_graph">4dp</dimen>
+  <dimen name="line_width_graph_default">1dp</dimen>
+  <dimen name="radius_point_graph_default">1dp</dimen>
+  <dimen name="textSize_default">16sp</dimen>
+  <dimen name="text_margin_default">4dp</dimen>
+</resources>

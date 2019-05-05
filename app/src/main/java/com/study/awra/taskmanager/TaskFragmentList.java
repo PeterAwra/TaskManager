@@ -1,89 +1,124 @@
 package com.study.awra.taskmanager;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.CursorJoiner;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
+import com.study.awra.taskmanager.AddTask.AddTaskFragment;
+import com.study.awra.taskmanager.db.App;
+import com.study.awra.taskmanager.db.Task;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
+public class TaskFragmentList extends FragmentWithTitle implements View.OnClickListener,
+    SwipeRefreshLayout.OnRefreshListener {
+  private TaskAdapter adapter;
+  private SwipeRefreshLayout swipeRefreshLayout;
+  private Context context;
+  private View fragmentNoTask;
 
-public class TaskFragmentList extends MyWithTitleFragment {
-    List<Task> mData;
-    Context mContext;
-    private int mRequestCodeAddTask=5555;
-    TaskAdapter adapter;
-    private LayoutInflater mInflater;
-    @Nullable
-    private ViewGroup mContainer;
+  @Override public void onResume() {
+    super.onResume();
+    refresh();
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mInflater = inflater;
-        mContainer = container;
-        View view;
-        if(mData.size()>=0){
-            view = getView(container, inflater);
-        }
-        else
-            view=inflater.inflate(R.layout.task_fragment_no_tasks,container,false);
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
+    this.context = context;
+  }
 
-        FloatingActionButton floatingActionButton=view.findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(getContext(),AddTaskActivity.class), mRequestCodeAddTask);
-            }
-        });
-        return view;
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    adapter = new TaskAdapter(context);
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.list_task_fragment, container, false);
+    RecyclerView recyclerView = view.findViewById(R.id.rv);
+    FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
+    swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+    styleRecycler(recyclerView);
+    floatingActionButton.setOnClickListener(this);
+    swipeRefreshLayout.setOnRefreshListener(this);
+    fragmentNoTask = view.findViewById(R.id.no_task);
+    return view;
+  }
+
+  private void styleRecycler(RecyclerView recyclerView) {
+    recyclerView.setLayoutManager(
+        new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+    recyclerView.addItemDecoration(
+        new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+    recyclerView.setAdapter(adapter);
+    ItemTouchHelper itemTouchHelper =
+        new ItemTouchHelper(new SwipeDeleteCompletedCallback(adapter));
+    itemTouchHelper.attachToRecyclerView(recyclerView);
+  }
+
+  public void refresh() {
+    RefreshData refreshData = new RefreshData(this);
+    refreshData.execute();
+  }
+
+  @Override public void onClick(View v) {
+    if (context instanceof MainActivity) {
+      FragmentManager supportFragmentManager = ((MainActivity) context).getSupportFragmentManager();
+      supportFragmentManager
+          .beginTransaction()
+          .setCustomAnimations(R.animator.slide_down, R.animator.slide_in_up, R.animator.slide_down,
+              R.animator.slide_in_up)
+          .hide(supportFragmentManager.getFragments().get(0))
+          .add(R.id.container_fragment, new AddTaskFragment())
+          .addToBackStack(null)
+          .commit();
+    }
+  }
+
+  @Override public void onRefresh() {
+    refresh();
+    swipeRefreshLayout.setRefreshing(false);
+  }
+
+  private void refreshFragment() {
+    if (adapter.getData().size() > 0) {
+      fragmentNoTask.setVisibility(View.INVISIBLE);
+    } else {
+      fragmentNoTask.setVisibility(View.VISIBLE);
+    }
+  }
+
+  public class RefreshData extends AsyncTask<Void, Void, List<Task>> {
+    private final WeakReference<TaskFragmentList> fragmentListWR;
+
+    public RefreshData(TaskFragmentList fragmentListWeakReference) {
+      this.fragmentListWR = new WeakReference<>(fragmentListWeakReference);
     }
 
-    private View getView(@Nullable ViewGroup container, @NonNull LayoutInflater inflater) {
-        View view;
-        view=inflater.inflate(R.layout.list_task_fragment,container,false);
-        RecyclerView recyclerView = view.findViewById(R.id.rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        adapter = new TaskAdapter(mContext, new ClickTaskList() {
-            @Override
-            public void ClickTask(Task task) {
-                Toast.makeText(mContext, task.getTaskTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        adapter.setData(mData);
-        recyclerView.setAdapter(adapter);
-        DividerItemDecoration decor = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
-        decor.setDrawable(getResources().getDrawable(R.drawable.divider_list));
-        recyclerView.addItemDecoration(decor);
-        return view;
+    @Override protected List<Task> doInBackground(Void... voids) {
+      return App.getInstance().getDataBase().taskDao().getAllTask();
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==mRequestCodeAddTask && resultCode==RESULT_OK)
-            mData.add((Task) data.getSerializableExtra(AddTaskActivity.class.getName()));
-           adapter.setData(mData);
+    @Override protected void onPostExecute(List<Task> tasks) {
+      TaskFragmentList taskFragmentList = fragmentListWR.get();
+      if (taskFragmentList != null) {
+        taskFragmentList.adapter.setData(tasks);
+      }
+      refreshFragment();
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mData = TasksData.get().getTasksData();
-        mContext=getActivity();
-
-    }
+  }
 }

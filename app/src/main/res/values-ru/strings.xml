@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name = "app_name">Диспетчер задач</string>
-         <string name ="title_task">Название задачи </string>
-         <string name ="priority_1">Приоритет 1</string>
-         <string name ="priority_2">Приоритет 2</string>
-         <string name ="priority_3">Приоритет 3</string>
-         <string name ="priority_4">Приоритет 4</string>
-         <string name ="tasks">Задачи</string>
-         <string name ="productivity">Производительность</string>
-         <string name ="s1_no_tasks">Вы все сделали сегодня!</string>
-         <string name ="s2_no_tasks">Наслаждайтесь свободным вечером.</string>
+  <string name="app_name">Диспетчер задач</string>
+      
+  <string name="title_task">Название задачи </string>
+      
+  <string name="priority_text">Приоритет</string>
+      
+  <string name="tasks">Задачи</string>
+      
+  <string name="productivity">Производительность</string>
+      
+  <string name="s1_no_tasks">Вы все сделали сегодня!</string>
+      
+  <string name="s2_no_tasks">Наслаждайтесь свободным вечером.</string>
+  <string name="completed_task">задач выполнено</string>
+  <string name="undo">Отмена</string>
 </resources>
